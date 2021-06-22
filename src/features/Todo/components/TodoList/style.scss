@@ -1,0 +1,20 @@
+.todo-list {
+   display: flex;
+   justify-content: center;
+   flex-flow: column wrap;
+   align-items: center;
+
+   list-style: none;
+
+   & .todo-item {
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 36px;
+      background-color: #ccc5c5;
+      margin: 10px 0;
+      display: block;
+      min-width: 300px;
+      border-radius: 10px;
+      text-align: center;
+   }
+}

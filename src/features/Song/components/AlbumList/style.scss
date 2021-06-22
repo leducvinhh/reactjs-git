@@ -1,0 +1,28 @@
+* {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+}
+
+.container {
+   display: flex;
+   margin: 20px -20px;
+   justify-content: center;
+
+   .item {
+      width: 159px;
+      margin-left: 40px;
+      cursor: pointer;
+
+      .image {
+         & img {
+            border-radius: 8px;
+            width: 159px;
+         }
+      }
+
+      .title {
+         text-align: center;
+      }
+   }
+}
