@@ -1,0 +1,16 @@
+{
+  "book": [
+    {
+      "title": "dasd",
+      "price": "dsada",
+      "status": "new",
+      "id": 2
+    },
+    {
+      "title": "dasdsa",
+      "price": "dadsa",
+      "status": "new",
+      "id": 3
+    }
+  ]
+}

@@ -1,40 +1,74 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import AddForm from './components/AddForm';
 import TodoList from './components/TodoList';
 
 const TodoFeature = () => {
-
-   const defaultTodoList = [
-      {
-         id: 1,
-         title: 'Playing football',
-         status: 'new',
-      },
-      {
-         id: 2,
-         title: 'Playing game',
-         status: 'completed',
-      },
-      {
-         id: 3,
-         title: 'Playing outdoor',
-         status: 'new',
-      },
-      {
-         id: 4,
-         title: 'Playing indoor',
-         status: 'new',
-      },
-   ];
-
-   const [todoList, setTodoList] = useState(defaultTodoList);
+   const [todoList, setTodoList] = useState([]);
    const [filter, setFilter] = useState('all');
 
-   const handleComplete = (id) => {
-      setTodoList(
-         todoList.map((todo) =>
-            todo.id === id ? { ...todo, status: todo.status === 'new' ? 'completed' : 'new' } : todo
-         )
-      );
+   useEffect(() => {
+      const bookServer = async () => {
+         const listBook = await fetchBooks();
+
+         setTodoList(listBook);
+      };
+
+      bookServer();
+   }, []);
+
+   //Fetch Books
+   const fetchBooks = async () => {
+      const res = await fetch('http://localhost:5000/book');
+      const data = await res.json();
+
+      return data;
+   };
+
+   const fetchBook = async (id) => {
+      const res = await fetch(`http://localhost:5000/book/${id}`);
+      const data = await res.json();
+
+      return data;
+   };
+
+   //Add Book
+   const addBook = async (book) => {
+      const res = await fetch('http://localhost:5000/book', {
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+         },
+         body: JSON.stringify(book),
+      });
+
+      const data = await res.json();
+      setTodoList([...todoList, data]);
+   };
+
+   //Delete Book
+   const deleteBook = async (id) => {
+      const res = await fetch(`http://localhost:5000/book/${id}`, {
+         method: 'DELETE',
+      });
+
+      res.status === 200 && setTodoList(todoList.filter((todo) => todo.id !== id));
+   };
+
+   const updateBook = async (id) => {
+      const bookServer = await fetchBook(id);
+
+      const upBook = { ...bookServer, status: bookServer.status === 'completed' ? 'new' : 'completed' };
+      const res = await fetch(`http://localhost:5000/book/${id}`, {
+         method: 'PUT',
+         headers: {
+            'Content-Type': 'application/json',
+         },
+         body: JSON.stringify(upBook),
+      });
+
+      const data = await res.json();
+
+      setTodoList(todoList.map((todo) => (todo.id === id ? { ...todo, status: data.status } : todo)));
    };
 
    const handleFilterChange = (newFilter) => {
@@ -45,7 +79,8 @@ const TodoFeature = () => {
 
    return (
       <div>
-         <TodoList onFilter={handleFilterChange} onCompleted={handleComplete} todoList={todoFilter} />
+         <AddForm onAddBook={addBook} />
+         <TodoList onDelete={deleteBook} onFilter={handleFilterChange} onCompleted={updateBook} todoList={todoFilter} />
       </div>
    );
 };
