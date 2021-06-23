@@ -16,5 +16,29 @@
       min-width: 300px;
       border-radius: 10px;
       text-align: center;
+      cursor: pointer;
+   }
+
+   & .completed {
+      text-decoration: line-through;
+      color: rgb(194, 40, 40);
+      font-style: italic;
+   }
+}
+.btn-list {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   & button {
+      margin-left: 10px;
+      display: inline-block;
+      padding: 8px 12px;
+      min-width: 150px;
+      cursor: pointer;
+      background-color: green;
+      color: #fff;
+      border: none;
+      outline: none;
+      border-radius: 8px;
    }
 }
